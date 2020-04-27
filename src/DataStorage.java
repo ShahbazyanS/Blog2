@@ -80,13 +80,8 @@ public class DataStorage {
             }
         }
     }
-
     public void deletPostByIndex(String title) {
-       for (Post post : posts){
-           if (post.getTitle().equals(title)){
-               posts.remove(post);
-           }
-       }
+        posts.removeIf(post -> post.getTitle().equals(title));
     }
 
 

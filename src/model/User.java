@@ -2,6 +2,7 @@ package model;
 
 import enums.Gender;
 
+
 public class User {
      private String name;
      private String surname;

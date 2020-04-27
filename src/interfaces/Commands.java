@@ -31,4 +31,5 @@ public interface Commands {
         System.out.println("please input " + ADD_POSTS + " for add post");
         System.out.println("please input " + DELETE_POST + " for delete post");
     }
+
 }

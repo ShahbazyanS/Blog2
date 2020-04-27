@@ -87,6 +87,7 @@ public class BlogMain implements Commands {
         }
     }
 
+
     private static void deletePost() {
         System.out.println("please input title for delete post");
         dataStorage.deletPostByIndex(scanner.nextLine());
