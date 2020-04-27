@@ -1,17 +1,22 @@
 package model;
 
+import enums.Gender;
+
 public class User {
+     private String name;
+     private String surname;
+     private String email;
+     private String password;
+     private int age;
+     private Gender gender;
 
-    private String name;
-    private String surname;
-    private String email;
-    private String password;
-
-    public User(String name, String surname, String email, String password) {
+    public User(String name, String surname, String email, String password, int age, Gender gender) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.age = age;
+        this.gender = gender;
     }
 
     public User() {
@@ -49,6 +54,22 @@ public class User {
         this.password = password;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,10 +77,12 @@ public class User {
 
         User user = (User) o;
 
+        if (age != user.age) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        return password != null ? password.equals(user.password) : user.password == null;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        return gender == user.gender;
     }
 
     @Override
@@ -68,6 +91,8 @@ public class User {
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + age;
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
         return result;
     }
 
@@ -77,6 +102,8 @@ public class User {
                 "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
+                ", age=" + age +
+                ", gender=" + gender +
                 '}';
     }
 }

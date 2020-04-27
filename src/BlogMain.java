@@ -1,18 +1,15 @@
 import enums.Category;
+import enums.Gender;
 import interfaces.Commands;
 import model.Post;
 import model.User;
 
-import java.util.*;
+import java.util.Scanner;
 
 public class BlogMain implements Commands {
-
-    public static Scanner scanner = new Scanner(System.in);
-    static List<Post> posts = new ArrayList<>();
-    static Map<String, User> users = new HashMap<>();
-    static User us = null;
-    static Post po = null;
-
+    private static Scanner scanner = new Scanner(System.in);
+    private static DataStorage dataStorage = new DataStorage();
+    private static User us = null;
 
     public static void main(String[] args) {
         boolean isRun = true;
@@ -35,7 +32,7 @@ public class BlogMain implements Commands {
                     registerUser();
                     break;
                 case PRINT_POST:
-                    System.out.println(posts);
+                    dataStorage.printPost();
                     break;
                 case PRINT_BY_KEYWORD:
                     printByKeyword();
@@ -46,24 +43,14 @@ public class BlogMain implements Commands {
         }
     }
 
-    private static void printByKeyword() {
-        System.out.println("please input keyword for search post");
-        String s = scanner.nextLine();
-        if (s.contains(po.getText())){
-            System.out.println(po);
-        }
-        else {
-            System.out.println(String.format("Post with %s does not exist",s));
-        }
-    }
-
     private static void login() {
-        if (users.isEmpty()) {
+        if (dataStorage.isEmptyUser()) {
             System.out.println("no user");
         } else {
+            System.out.println("please input email and password for login");
             String s = scanner.nextLine();
-            if (s.equals(us.getPassword())) {
-                users.get(us.getPassword());
+            String[] str = s.split(",");
+            if (us.getEmail().equals(str[0]) && us.getPassword().equals(str[1])) {
                 loginUser();
             }
         }
@@ -87,35 +74,22 @@ public class BlogMain implements Commands {
                     addPost();
                     break;
                 case DELETE_POST:
-                    posts.clear();
+                    deletePost();
+                    break;
                 default:
                     System.out.println("wrong command");
             }
         }
     }
 
-
-
-    private static void registerUser() {
-        System.out.println("please input name, surname, email, password  for register");
-        try {
-            String s = scanner.nextLine();
-            String[] arr = s.split(",");
-            User user = new User();
-            user.setName(arr[0]);
-            user.setSurname(arr[1]);
-            user.setEmail(arr[2]);
-            user.setPassword(arr[3]);
-            users.put(user.getPassword(), user);
-            System.out.println("registration completed successfully");
-            us = user;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("please input valid data");
-        }
+    private static void deletePost() {
+        System.out.println("please input title for delete post");
+        String s = scanner.nextLine();
+        dataStorage.getPost(s).clear();
+        System.out.println("post dleted");
     }
 
-
-    public static void addPost() {
+    private static void addPost() {
         System.out.println("please input title, text, category for add post");
         try {
             String s = scanner.nextLine();
@@ -125,11 +99,40 @@ public class BlogMain implements Commands {
             post.setText(str[1]);
             post.setCategory(Category.valueOf(str[2].toUpperCase()));
             post.setUser(us);
-            posts.add(post);
-            po = post;
-            System.out.println("post was added");
-        } catch (ArrayIndexOutOfBoundsException e) {
+            dataStorage.addPost(post);
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+            System.out.println("please input valid data");
+        }
+
+    }
+
+    private static void printByKeyword() {
+        if (dataStorage.isEmptyPost()) {
+            System.out.println("no post");
+        } else {
+            System.out.println("please input keyword for search post");
+            dataStorage.printPostByKeyword(scanner.nextLine());
+        }
+    }
+
+    private static void registerUser() {
+        System.out.println("please input name, surname,age, email, password, gender for register");
+        try {
+            String s = scanner.nextLine();
+            String[] str = s.split(",");
+            User user = new User();
+            user.setName(str[0]);
+            user.setSurname(str[1]);
+            user.setAge(Integer.parseInt(str[2]));
+            user.setEmail(str[3]);
+            user.setPassword(str[4]);
+            user.setGender(Gender.valueOf(str[5].toUpperCase()));
+            dataStorage.addUser(user);
+            System.out.println("registration completed successfully");
+            us = user;
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
             System.out.println("please input valid data");
         }
     }
+
 }
