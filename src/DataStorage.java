@@ -1,3 +1,5 @@
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
+import javafx.geometry.Pos;
 import model.Post;
 import model.User;
 
@@ -11,6 +13,7 @@ public class DataStorage {
 
     private List<Post> posts;
     private Map<String, User> userMap = new HashMap<>();
+    private Object Exception;
 
     DataStorage(int lenght) {
         posts = new ArrayList<>(lenght);
@@ -78,16 +81,22 @@ public class DataStorage {
         }
     }
 
-    public void deletPostByIndex(int index) {
-        posts.remove(index);
+    public void deletPostByIndex(String title) {
+       for (Post post : posts){
+           if (post.getTitle().equals(title)){
+               posts.remove(post);
+           }
+       }
     }
 
-    public List<Post> getPost(String title) {
-        for (Post post : posts) {
-            if (post.getTitle().equals(title)) {
-                return posts;
+
+    public User getUserByEmailAndPassword(String email, String password) throws Exception {
+        for (String s : userMap.keySet()) {
+            User user = userMap.get(s);
+            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+                return user;
             }
         }
-        return null;
+        throw new Exception("wrong email or password");
     }
 }

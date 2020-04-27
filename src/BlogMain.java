@@ -48,10 +48,15 @@ public class BlogMain implements Commands {
             System.out.println("no user");
         } else {
             System.out.println("please input email and password for login");
-            String s = scanner.nextLine();
-            String[] str = s.split(",");
-            if (us.getEmail().equals(str[0]) && us.getPassword().equals(str[1])) {
-                loginUser();
+            try {
+                String s = scanner.nextLine();
+                String[] str = s.split(",");
+                if (str.length == 2) {
+                    us = dataStorage.getUserByEmailAndPassword(str[0], str[1]);
+                    loginUser();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -84,9 +89,8 @@ public class BlogMain implements Commands {
 
     private static void deletePost() {
         System.out.println("please input title for delete post");
-        String s = scanner.nextLine();
-        dataStorage.getPost(s).clear();
-        System.out.println("post dleted");
+        dataStorage.deletPostByIndex(scanner.nextLine());
+        System.out.println("post deleted");
     }
 
     private static void addPost() {
