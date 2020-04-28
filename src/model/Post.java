@@ -2,7 +2,9 @@ package model;
 
 import enums.Category;
 
-public class Post {
+import java.util.Comparator;
+
+public class Post implements Comparator<Post> {
 
 
     private String title;
@@ -53,6 +55,11 @@ public class Post {
     }
 
     @Override
+    public int compare(Post o1, Post o2) {
+        return o1.getTitle().compareTo(o2.getTitle());
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -83,4 +90,5 @@ public class Post {
                 ", user=" + user +
                 '}';
     }
+
 }

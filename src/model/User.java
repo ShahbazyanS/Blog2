@@ -2,6 +2,8 @@ package model;
 
 import enums.Gender;
 
+import java.util.Comparator;
+
 
 public class User {
      private String name;
@@ -71,6 +73,7 @@ public class User {
         this.gender = gender;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -107,4 +110,6 @@ public class User {
                 ", gender=" + gender +
                 '}';
     }
+
+
 }

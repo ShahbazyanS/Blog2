@@ -1,5 +1,3 @@
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
-import javafx.geometry.Pos;
 import model.Post;
 import model.User;
 
@@ -33,6 +31,7 @@ public class DataStorage {
     }
 
     public void printPost() {
+        posts.sort(new Post());
         for (Post post : posts) {
             System.out.println(post);
         }
@@ -81,7 +80,11 @@ public class DataStorage {
         }
     }
     public void deletPostByIndex(String title) {
-        posts.removeIf(post -> post.getTitle().equals(title));
+       for (Post post : posts){
+           if (post.getTitle().equals(title)){
+               posts.remove(post);
+           }
+       }
     }
 
 
